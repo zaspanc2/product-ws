@@ -4,6 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception error model.
+ * <p>
+ * This model is returned as a response when any exception occurs.
+ *
+ * @since 1.0.0
+ */
 @Getter
 @Setter
 public class Error {
@@ -13,7 +20,9 @@ public class Error {
 
     public Error(HttpStatus status, String message) {
         if (status == null) {
-            status = HttpStatus.BAD_REQUEST;
+
+            // If status is not provided, set it to 500.
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         this.code = String.valueOf(status.value());

@@ -12,10 +12,25 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * JPA repository for {@link Product} entity.
+ *
+ * @since 1.0.0
+ */
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-    default Page<Product> findAll(String name, BigDecimal amountStart, BigDecimal amountEnd, Boolean active, Pageable pageable) {
+    /**
+     * Finds all {@link Product}s by parameters.
+     *
+     * @param name optional part or full name of a product
+     * @param priceStart optional product price start
+     * @param priceEnd optional product price end
+     * @param active optional flag for including active/inactive products
+     * @param pageable {@link Pageable} with pagination information
+     * @return {@link Page} with {@link Product}s
+     */
+    default Page<Product> findAll(String name, BigDecimal priceStart, BigDecimal priceEnd, Boolean active, Pageable pageable) {
         return this.findAll((root, query, builder) -> {
 
             var predicates = new ArrayList<Predicate>();
@@ -24,12 +39,12 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
                 predicates.add(builder.like(root.get("name"), "%" + name + "%"));
             }
 
-            if (amountStart != null) {
-                predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), amountStart));
+            if (priceStart != null) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), priceStart));
             }
 
-            if (amountEnd != null) {
-                predicates.add(builder.lessThanOrEqualTo(root.get("amount"), amountEnd));
+            if (priceEnd != null) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("amount"), priceEnd));
             }
 
             if (active != null) {
@@ -40,6 +55,15 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
         }, pageable);
     }
 
+    /**
+     * Finds {@link Product} by id.
+     * <p>
+     * Throws {@link NotFoundException} if product does not exist.
+     *
+     * @param id product id
+     * @return {@link Product}
+     * @throws NotFoundException when product does not exist
+     */
     default Product findRequiredById(long id) throws NotFoundException {
         return this.findById(id).orElseThrow(() -> new NotFoundException("Cannot find Product with id " + id));
     }

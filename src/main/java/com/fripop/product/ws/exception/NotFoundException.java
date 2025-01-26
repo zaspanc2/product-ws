@@ -5,6 +5,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+/**
+ * Not found exception with {@link HttpStatus#NOT_FOUND}.
+ *
+ * @since 1.0.0
+ */
 @NoArgsConstructor
 public class NotFoundException extends Exception implements Serializable {
 
@@ -13,13 +18,4 @@ public class NotFoundException extends Exception implements Serializable {
     public NotFoundException(String message) {
         super(message);
     }
-
-    public NotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NotFoundException(Throwable cause) {
-        super(cause);
-    }
-
 }
