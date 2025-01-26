@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/products")
@@ -34,7 +37,9 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Success", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class))
-            })
+            }),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Unexpected error")
     })
     public ResponseEntity<ProductDto> create(@Parameter(description = "Product to be created", required = true)
                                              @Valid @NotNull @RequestBody ProductCreateDto productCreate) {
@@ -57,5 +62,17 @@ public class ProductController {
             throws NotFoundException {
         productService.update(id, productUpdate);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    public ResponseEntity<ProductDto> find(@PathVariable long id) throws NotFoundException {
+        var response = productService.findRequired(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ProductDto>> findAll(Pageable pageable) {
+        var response = productService.findAll(null, null, null, null, pageable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
