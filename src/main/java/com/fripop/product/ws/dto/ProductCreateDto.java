@@ -6,23 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
-
-    private Long id;
+public class ProductCreateDto {
 
     private String code;
-
-    private Timestamp created;
-
-    private Timestamp updated;
-
-    private Boolean active;
 
     private String name;
 

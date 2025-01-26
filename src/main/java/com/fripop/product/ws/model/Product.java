@@ -27,6 +27,9 @@ public class Product {
     @Column(name = "updated")
     private Timestamp updated;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     @Column(name = "name", nullable = false)
     private String name;
 
