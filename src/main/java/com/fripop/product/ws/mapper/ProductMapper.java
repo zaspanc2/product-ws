@@ -16,6 +16,7 @@ public interface ProductMapper {
 
     /**
      * Converts {@link ProductCreateDto} to {@link Product}.
+     *
      * @param productCreate {@link ProductCreateDto} to convert
      * @return constructed {@link Product}
      */
@@ -24,6 +25,7 @@ public interface ProductMapper {
 
     /**
      * Converts {@link Product} ti {@link ProductDto}.
+     *
      * @param product {@link Product} to convert
      * @return constructed {@link ProductDto}
      */

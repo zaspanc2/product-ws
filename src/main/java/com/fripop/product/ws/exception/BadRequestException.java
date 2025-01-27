@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BadRequestException extends Exception implements Serializable {
 
-    public static final HttpStatus HTTP_BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    public static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     public BadRequestException(String message) {
         super(message);

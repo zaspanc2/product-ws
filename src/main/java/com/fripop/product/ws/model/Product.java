@@ -3,9 +3,11 @@ package com.fripop.product.ws.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * Product entity model.
@@ -74,6 +76,11 @@ public class Product {
     public void onCreate() {
         if (this.created == null) {
             this.created = new Timestamp(System.currentTimeMillis());
+        }
+
+        // Auto generate code if it is empty.
+        if (StringUtils.isEmpty(this.code)) {
+            this.code = UUID.randomUUID().toString();
         }
     }
 

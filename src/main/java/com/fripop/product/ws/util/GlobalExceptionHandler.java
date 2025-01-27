@@ -1,7 +1,8 @@
-package com.fripop.product.ws.exception;
+package com.fripop.product.ws.util;
 
+import com.fripop.product.ws.exception.BadRequestException;
+import com.fripop.product.ws.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -21,6 +22,8 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private final Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
+
     /**
      * Handles mappings for general {@link Exception}.
      *
@@ -31,7 +34,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(Exception exception) {
 
         // Set generic message for any unhandled exception to prevent disclosing any unwanted information.
-        return new ResponseEntity<>(new Error(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+        var message = "Internal Server Error.";
+
+        logger.error(message);
+        return new ResponseEntity<>(new Error(HttpStatus.INTERNAL_SERVER_ERROR, message),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -42,7 +49,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(NotFoundException notFoundException) {
-        return new ResponseEntity<>(new Error(HttpStatus.NOT_FOUND, notFoundException.getMessage()), HttpStatus.NOT_FOUND);
+
+        logger.log(notFoundException);
+        return new ResponseEntity<>(new Error(NotFoundException.HTTP_STATUS, notFoundException.getMessage()),
+                NotFoundException.HTTP_STATUS);
     }
 
     /**
@@ -53,7 +63,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> handleBadRequestException(BadRequestException badRequestException) {
-        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST, badRequestException.getMessage()), HttpStatus.BAD_REQUEST);
+
+        logger.log(badRequestException);
+        return new ResponseEntity<>(new Error(BadRequestException.HTTP_STATUS, badRequestException.getMessage()),
+                BadRequestException.HTTP_STATUS);
     }
 
     /**
@@ -75,7 +88,9 @@ public class GlobalExceptionHandler {
             message = firstValidationOpt.get().getDefaultMessage();
         }
 
-        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST, message), HttpStatus.BAD_REQUEST);
+        logger.error(message);
+        return new ResponseEntity<>(new Error(BadRequestException.HTTP_STATUS, message),
+                BadRequestException.HTTP_STATUS);
     }
 
     /**
@@ -91,6 +106,9 @@ public class GlobalExceptionHandler {
             MissingServletRequestParameterException.class
     })
     public ResponseEntity<?> handleValidationException(Exception validationException) {
-        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST, validationException.getMessage()), HttpStatus.BAD_REQUEST);
+
+        logger.error(validationException.getMessage());
+        return new ResponseEntity<>(new Error(BadRequestException.HTTP_STATUS, validationException.getMessage()),
+                BadRequestException.HTTP_STATUS);
     }
 }

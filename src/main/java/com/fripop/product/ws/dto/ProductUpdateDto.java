@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductUpdateDto {
+public class ProductUpdateDto implements Serializable {
 
     /**
      * {@link Boolean} flag indicating if product is active or not.

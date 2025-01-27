@@ -1,8 +1,10 @@
-package com.fripop.product.ws.exception;
+package com.fripop.product.ws.util;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
+
+import java.io.Serializable;
 
 /**
  * Exception error model.
@@ -13,9 +15,21 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 @Setter
-public class Error {
+public class Error implements Serializable {
+
+    /**
+     * Http status name.
+     */
     private String status;
+
+    /**
+     * Http status code.
+     */
     private String code;
+
+    /**
+     * Exception message.
+     */
     private String message;
 
     public Error(HttpStatus status, String message) {

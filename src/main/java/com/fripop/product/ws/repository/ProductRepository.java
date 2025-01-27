@@ -23,11 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     /**
      * Finds all {@link Product}s by parameters.
      *
-     * @param name optional part or full name of a product
+     * @param name       optional part or full name of a product
      * @param priceStart optional product price start
-     * @param priceEnd optional product price end
-     * @param active optional flag for including active/inactive products
-     * @param pageable {@link Pageable} with pagination information
+     * @param priceEnd   optional product price end
+     * @param active     optional flag for including active/inactive products
+     * @param pageable   {@link Pageable} with pagination information
      * @return {@link Page} with {@link Product}s
      */
     default Page<Product> findAll(String name, BigDecimal priceStart, BigDecimal priceEnd, Boolean active, Pageable pageable) {
@@ -35,18 +35,22 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
             var predicates = new ArrayList<Predicate>();
 
+            // Name filter.
             if (name != null) {
                 predicates.add(builder.like(root.get("name"), "%" + name + "%"));
             }
 
+            // Price start filter.
             if (priceStart != null) {
-                predicates.add(builder.greaterThanOrEqualTo(root.get("amount"), priceStart));
+                predicates.add(builder.greaterThanOrEqualTo(root.get("price"), priceStart));
             }
 
+            // Price end filter.
             if (priceEnd != null) {
-                predicates.add(builder.lessThanOrEqualTo(root.get("amount"), priceEnd));
+                predicates.add(builder.lessThanOrEqualTo(root.get("price"), priceEnd));
             }
 
+            // Active filter.
             if (active != null) {
                 predicates.add(builder.equal(root.get("active"), active));
             }

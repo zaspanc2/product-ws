@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class NotFoundException extends Exception implements Serializable {
 
-    public static final HttpStatus HTTP_NOT_FOUND = HttpStatus.NOT_FOUND;
+    public static final HttpStatus HTTP_STATUS = HttpStatus.NOT_FOUND;
 
     public NotFoundException(String message) {
         super(message);

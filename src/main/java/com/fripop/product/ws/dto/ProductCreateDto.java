@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -21,12 +22,11 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCreateDto {
+public class ProductCreateDto implements Serializable {
 
     /**
      * Unique alphanumeric identifier.
      */
-    @NotBlank(message = "Product code must be provided.")
     @Length(max = 255, message = "Product code length cannot exceed 255 characters")
     @Schema(description = "Unique alphanumeric identifier")
     private String code;

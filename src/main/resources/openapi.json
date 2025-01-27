@@ -1,0 +1,436 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/productws",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Find product by id",
+        "description": "Handles requests for reading an existing product by id",
+        "operationId": "findProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Update an existing product",
+        "description": "Handles requests for updating an existing product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Deletes an existing product",
+        "description": "Handles requests for deleting an existing product",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Find all products by parameters",
+        "description": "Handles requests for reading all existing products by parameters",
+        "operationId": "findAllProducts",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Optional part or full product name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "book"
+          },
+          {
+            "name": "price-start",
+            "in": "query",
+            "description": "Optional product price start value",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 11.3
+          },
+          {
+            "name": "price-end",
+            "in": "query",
+            "description": "Optional product price end value",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 22.5
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "description": "Optional flag for including active/inactive products",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectsResponseDtoProductDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectsResponseDtoProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Create a new product",
+        "description": "Handles requests for creating a new product",
+        "operationId": "createProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProductUpdateDto": {
+        "required": [
+          "name",
+          "price"
+        ],
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "description": "Flag indicating if product is active",
+            "default": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price",
+            "example": 22.5
+          }
+        },
+        "description": "Product to be updated"
+      },
+      "ProductCreateDto": {
+        "required": [
+          "name",
+          "price"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Unique alphanumeric identifier"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Flag indicating if product is active",
+            "default": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price",
+            "example": 22.5
+          }
+        },
+        "description": "Product to be created"
+      },
+      "ProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique numeric identifier",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string",
+            "description": "Unique alphanumeric identifier"
+          },
+          "created": {
+            "type": "string",
+            "description": "Timestamp of when record was created",
+            "format": "date-time"
+          },
+          "updated": {
+            "type": "string",
+            "description": "Timestamp of when record was updated",
+            "format": "date-time"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Flag indicating if product is active"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price",
+            "example": 22.5
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ObjectsResponseDtoProductDto": {
+        "type": "object",
+        "properties": {
+          "totalNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "objects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDto"
+            }
+          }
+        }
+      }
+    }
+  }
+}
