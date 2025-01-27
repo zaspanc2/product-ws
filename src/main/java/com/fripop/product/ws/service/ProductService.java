@@ -54,9 +54,9 @@ public class ProductService {
     public void update(long id, ProductUpdateDto productUpdate) throws NotFoundException {
         var existingProduct = productRepository.findRequiredById(id);
 
-        if (productUpdate.getActive() != null) existingProduct.setActive(productUpdate.getActive());
-        if (productUpdate.getName() != null) existingProduct.setName(productUpdate.getName());
-        if (productUpdate.getPrice() != null) existingProduct.setPrice(productUpdate.getPrice());
+        existingProduct.setActive(productUpdate.getActive());
+        existingProduct.setName(productUpdate.getName());
+        existingProduct.setPrice(productUpdate.getPrice());
 
         productRepository.save(existingProduct);
     }
