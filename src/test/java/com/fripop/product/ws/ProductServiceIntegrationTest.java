@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Integration test scenarios for {@link ProductController}.
  * <p>
  * This test performs actual rest calls to real endpoints and will modify the data in the connected database.
+ * Make sure that environment variables are set.
  *
  * @since 1.0.0
  */

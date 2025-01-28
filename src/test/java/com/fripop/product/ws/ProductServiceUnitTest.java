@@ -1,19 +1,26 @@
 package com.fripop.product.ws;
 
 import com.fripop.product.ws.dto.ProductCreateDto;
+import com.fripop.product.ws.dto.ProductUpdateDto;
+import com.fripop.product.ws.exception.NotFoundException;
 import com.fripop.product.ws.mapper.ProductMapper;
 import com.fripop.product.ws.mapper.ProductMapperImpl;
 import com.fripop.product.ws.model.Product;
+import com.fripop.product.ws.repository.ProductRepository;
 import com.fripop.product.ws.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit scenarios for {@link ProductService}.
@@ -21,14 +28,26 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since 1.0.0
  */
 public class ProductServiceUnitTest {
+
     private ProductMapper productMapper;
+    private ProductService productService;
+    private ProductRepository productRepository;
 
     /**
      * Prepare mocks.
      */
     @BeforeEach
     void setUp() {
+
+        // Create a new product mapper implementation to do the actual mappings.
         productMapper = new ProductMapperImpl();
+
+        // Mock product repository to return the default values.
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        // Mock product service to call real methods.
+        productService = Mockito.mock(ProductService.class, Mockito.withSettings()
+                .useConstructor(productRepository, productMapper).defaultAnswer(CALLS_REAL_METHODS));
     }
 
     /**
@@ -77,5 +96,29 @@ public class ProductServiceUnitTest {
         assertEquals(product.getUpdated(), productDto.getUpdated(), "Product updated is expected to match.");
         assertEquals(product.getActive(), productDto.getActive(), "Product active flag is expected to match.");
         assertEquals(product.getPrice(), productDto.getPrice(), "Product price is expected to match.");
+    }
+
+    /**
+     * Test product update method.
+     *
+     * @throws NotFoundException that is not expected
+     */
+    @Test
+    @DisplayName("Test product mapstruct mappings")
+    void testProductUpdate() throws NotFoundException {
+
+        // Make find call to the product repository return the following product.
+        var existingProduct = new Product();
+        existingProduct.setId(1L);
+        when(productRepository.findRequiredById(anyLong())).thenReturn(existingProduct);
+
+        // Prepare the product update data.
+        var productUpdateDto = new ProductUpdateDto();
+        productUpdateDto.setName("test-update");
+        productUpdateDto.setPrice(new BigDecimal("123.41"));
+        productUpdateDto.setActive(false);
+
+        // Preform mock product update.
+        productService.update(1L, productUpdateDto);
     }
 }

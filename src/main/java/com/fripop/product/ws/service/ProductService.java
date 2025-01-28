@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +53,7 @@ public class ProductService {
     public void update(long id, ProductUpdateDto productUpdate) throws NotFoundException {
         var existingProduct = productRepository.findRequiredById(id);
 
+        // Assign the new values.
         existingProduct.setActive(productUpdate.getActive());
         existingProduct.setName(productUpdate.getName());
         existingProduct.setPrice(productUpdate.getPrice());
