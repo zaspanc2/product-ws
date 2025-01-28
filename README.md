@@ -3,8 +3,6 @@
 Spring Boot application used for product related operations. Supports JSON requests and responses.
 The project uses Spring Boot 3.4.2 and Java 17.
 
-Developed by Jan Braunsberger.
-
 ## Contents
 
 The project contains the code for product web service with unit and integration tests.
