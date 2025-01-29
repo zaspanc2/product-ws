@@ -54,7 +54,7 @@ further modifications.
 
 #### Running using IntelliJ
 
-1. Open the whole product-ws using IntelliJ.
+1. Open the whole project using IntelliJ.
 2. Create a new Spring Boot configuration.
 3. Override above-mentioned environment variables if needed.
 4. Set a Java 17 sdk.
@@ -64,9 +64,11 @@ further modifications.
 #### Running using docker
 
 1. Install Docker.
-2. Move to the product-ws folder and build the docker image `using docker build -t product-ws-local .`.
-3. Copy `docker-compose.yaml` to a separate location or move to the resources folder.
-4. Run the product web service and/or postgres database using `docker-compose up`.
+2. Open the whole project using IntelliJ.
+3. Build a jar file using `mvn clean install -Dmaven.test.skip=true`.
+4. Move to the product-ws folder and build the docker image `using docker build -t product-ws-local .`.
+5. Copy `docker-compose.yaml` to a separate location or move to the resources folder.
+6. Run the product web service and/or postgres database using `docker-compose up`.
 
 ## Usage
 
@@ -82,4 +84,5 @@ started (make sure to set the correct port):
 To use the web service using postman, first import the provided collection and then properly set the hostname variable.
 
 ## Testing
+
 Project also contains unit and integration tests located in the test directory.
